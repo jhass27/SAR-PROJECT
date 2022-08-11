@@ -5,7 +5,7 @@ int DIR_Pin = 7;
 
 uint32_t cont = 0;
 uint32_t cont_loop = 0;
-uint32_t microsteps_total =12000;
+uint32_t microsteps_total =32000;
 bool DIR_STATE = true; 
 bool MOTOR_STATE = true;
 
@@ -43,19 +43,26 @@ void loop()
      //Serial.print("cont_loop: "); 
      //Serial.println(cont_loop);
    
-
+      noInterrupts();
       Serial.println("timer_on");
      // timer_normal();
       //delay(1000);
-      timer_on(); 
+      interrupts();
+      timer_on();   
       //timer_normal(); 
 
       //timer_off();
-      delay(10000);
+      noInterrupts();
+      if (cont > microsteps_total){// || ((digitalRead(Lswitch) == LOW) && (flag == 0))){
+              cli();}
 
       Serial.println("timer_off por 5segundos"); //En 5segundos hay 10 conteos -- 5seg=10*0.5seg .......(a)
       
       cont_loop++;
+      interrupts();
+      timer_off();
+      noInterrupts();
+      delay(10000);
      } 
 
       if(cont_loop==3){
@@ -101,8 +108,7 @@ void timer_on()
   OCR1A = 10;             // carga el registrador de comparación: ( 16MHz/1024*1Hz ) -1 = 15624 = 0X3D08                           
   TCCR1B |= (1 << WGM12)|(1<<CS10)|(1 << CS11);    // modo CTC, prescaler de 1024: CS12 = 1 e CS10 = 1  
   TIMSK1 |= (1 << OCIE1A);  // habilita interrupción por igualdade de comparación 
-  if (cont > microsteps_total){// || ((digitalRead(Lswitch) == LOW) && (flag == 0))){
-     cli();}
+
   //cont++;
 }
 
