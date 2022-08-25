@@ -5,7 +5,7 @@ int DIR_Pin = 7;
 
 long cont = 0;
 uint32_t cont_loop = 0;
-uint32_t microsteps_total =45000;
+uint32_t microsteps_total =3000;
 bool DIR_STATE = true; 
 bool MOTOR_STATE = true;
 
@@ -19,7 +19,7 @@ void setup()
   TCCR1A = 0;                //limpia registrador A
   TCCR1B = 0;                //limpia registrador B
   //TCNT1  = 0;                //Inicializa el temporizador
-  OCR1A = 10;              // carga el registrador de comparación: ( 16MHz/1024*1Hz ) -1 = 15624 = 0X3D08   --1HZ -> 1seg
+  OCR1A = microsteps_total;              // carga el registrador de comparación: ( 16MHz/1024*1Hz ) -1 = 15624 = 0X3D08   --1HZ -> 1seg
                              // carga el registrador de comparación: ( 16MHz/1024*2Hz ) -1 = 7811.5           --2HZ -> 0.5seg
   TCCR1B |= (1 << WGM12 | 1 << CS10 | 1 << CS11);   // modo CTC, prescaler de 64: CS11 = 1 e CS10 = 1  
   TIMSK1 |= (1 << OCIE1A);  // habilita interrupción por igualdade de comparación
@@ -86,7 +86,7 @@ void timer_on()
   TCCR1A = 0;                //limpia registrador A
   TCCR1B = 0;                //limpia registrador B
   TCNT1  = 0;                //Inicializa el temporizador
-  OCR1A = 10;             // carga el registrador de comparación: ( 16MHz/1024*1Hz ) -1 = 15624 = 0X3D08                           
+  OCR1A = microsteps_total;             // carga el registrador de comparación: ( 16MHz/1024*1Hz ) -1 = 15624 = 0X3D08                           
   TCCR1B |= (1 << WGM12 | 1<<CS10 | 1 << CS11);    // modo CTC, prescaler de 1024: CS12 = 1 e CS10 = 1
   TIMSK1 |= (1 << OCIE1A);  
 
