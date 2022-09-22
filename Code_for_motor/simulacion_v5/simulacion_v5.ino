@@ -49,7 +49,8 @@ void setup()
 
   
 void loop()
-{ 
+
+{  
   if(cont_loop<5){
     
      //Serial.print("cont_loop: "); 
@@ -71,19 +72,33 @@ void loop()
 // 
      //delay(5000);
       cont_loop++;
+
+
      } 
 
-      if(cont_loop==5){
-        cli();
-        bool DIR_STATE = true; 
-        digitalWrite(DIR_Pin, DIR_STATE); 
-        microsteps_total=50000;
-        sei();
-        timer_on();
-        delay(5000);
-      //Serial.println("finalización del timer");  
-        while (1);      
-      }
+  if(cont_loop==5){
+    cli();
+    bool DIR_STATE = true; 
+    digitalWrite(DIR_Pin, DIR_STATE); 
+    microsteps_total=50000;
+    sei();
+    timer_on();
+    delay(5000);
+  //Serial.println("finalización del timer");  
+    while (1);      
+  }
+  if(digitalRead(Lswitch) == LOW){
+    cli();
+    Serial.print("down");
+    digitalWrite(led, LOW);
+    bool DIR_STATE = false; 
+    digitalWrite(DIR_Pin, DIR_STATE);
+    cont_loop=0;
+    while (1);
+  } 
+  
+
+    
       
   
 }
@@ -100,7 +115,6 @@ ISR(TIMER1_COMPA_vect)          // interrupción por igualdade de comparación e
      //Serial.print("cont: ");
      //Serial.println(cont);
     }
-    
     else{
      digitalWrite(STEP_Pin,false); 
      //digitalWrite(STEP_Pin,LOW);  //Write new state to the LED on pin D5 
