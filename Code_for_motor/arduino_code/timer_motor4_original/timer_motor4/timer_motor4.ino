@@ -6,7 +6,7 @@ int flag = 0;
 int led = 8; 
 
 // the riels have 2.10m=2100mm 
-uint32_t milimeter = 3500 ;
+uint32_t milimeter = 200 ;
 uint32_t microstep = 387.44*milimeter + 706.3; //12800; //8533; //25600;
 uint8_t n_turns = 1;
 uint32_t cont = 0;
